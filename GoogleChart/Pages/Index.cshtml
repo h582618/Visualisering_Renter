@@ -1,0 +1,36 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div id="chart"></div>
+
+@section Scripts
+{
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <script type="text/javascript">// Load the Visualization API and the corechart package. //
+
+        google.charts.load('current', { 'packages': ['corechart','line'] });
+        google.charts.setOnLoadCallback(drawCurveTypes);
+        function drawCurveTypes() {
+            var jsonData = $.ajax({
+                url: "/Index?handler=ChartData",
+                dataType: "json",
+                async: false
+            }).responseText;
+            var data = new google.visualization.DataTable(jsonData);
+            var options = {
+                'title': 'Renter valuta',
+                'width': 1500,
+                'height': 1000,
+                'curveType' : 'function'
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('chart'));
+            chart.draw(data, options);
+        
+          }</script>
+
+}
